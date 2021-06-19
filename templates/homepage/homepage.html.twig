@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} MySpace {% endblock %}
+{% block body %}
+    <div align="center">
+        {% for article in articles %}
+        <p><i>{{ loop.index }}</i> <a href="{{ article }}"> {{ article }} </a></p>
+        {% endfor %}
+    </div>
+{% endblock %}
