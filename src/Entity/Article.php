@@ -4,12 +4,15 @@ namespace App\Entity;
 
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Timestampable\Traits\Timestampable;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
  */
 class Article
 {
+    use Timestampable;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -24,6 +27,7 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=100, unique="true")
+     * @Gedmo\Slug(fields={"name"})
      */
     private $slug;
 

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -22,19 +23,21 @@ class ArticleRepository extends ServiceEntityRepository
     // /**
     //  * @return Article[] Returns an array of Article objects
     //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllArticlesDESC()
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
+        $queryBuilder = $this->createQueryBuilder('a');
+
+        return $this->addIsPublishedQueryBuilder($queryBuilder)
+            ->orderBy('a.publishedAt', 'DESC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    private function addIsPublishedQueryBuilder( QueryBuilder $queryBuilder): QueryBuilder
+    {
+        return $queryBuilder->andWhere('a.publishedAt IS NOT NULL');
+    }
 
     /*
     public function findOneBySomeField($value): ?Article

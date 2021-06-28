@@ -4,7 +4,11 @@
 {% block body %}
     <div align="center">
         {% for article in articles %}
-        <p><i>{{ loop.index }}</i> <a href="{{ article }}"> {{ article }} </a></p>
+        <p><i>{{ loop.index }}</i>
+        <a href="{{ path('app_article_show', {slug: article.slug}) }}">
+        {{ article.name }}
+        </a>Published {{ article.PublishedAt|ago }} </p>
         {% endfor %}
+        <p><a href=""></a></p>
     </div>
 {% endblock %}
