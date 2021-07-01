@@ -15,7 +15,7 @@ class ArticleController extends AbstractController
     private $createNotFoundException;
 
     /**
-     * @Route("/articles/{slug}")
+     * @Route("/articles/{slug}", name="app_show")
      */
     public function show(Article $article)
     {

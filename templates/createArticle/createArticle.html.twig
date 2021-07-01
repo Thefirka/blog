@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block title %} New article {% endblock %}
+{% block body %}
+<form method="post" action="">
+    Article name :<br>
+    <input name="name" placeholder="Article name" value="{{ name }}"><br><br>
+    Article text :<br>
+    <textarea name="text" placeholder="ArticleText">{{ text }}</textarea><br><br>
+    <input type="submit">
+</form>
+{% endblock %}

@@ -4,7 +4,6 @@ namespace App\Factory;
 
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
-use DateTime;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -42,7 +41,8 @@ final class ArticleFactory extends ModelFactory
                 self::faker()->numberBetween(1, 4),
                 true
             ),
-            'PublishedAt' => self::faker()->dateTimeBetween('-100 days', '-1 minute')
+            'PublishedAt' => self::faker()->dateTimeBetween('-100 days', '-1 minute'),
+            'authorName'  => new UserFactory()
         ];
     }
 
