@@ -4,7 +4,10 @@
 namespace App\Controller;
 
 use App\Repository\ArticleRepository;
+use App\Repository\UserRepository;
+use App\UserSessionApp\UserSession;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomePageController extends AbstractController
@@ -14,12 +17,18 @@ class HomePageController extends AbstractController
      */
     public function homepage(ArticleRepository $repository)
     {
-        $username = false;
+        $session = new Session();
+        $currentUser = new UserSession();
+        $currentUser = $currentUser->getCurrentUser();
+        $message = $session->getFlashBag()->get('error');
+        $session->getFlashBag()->clear();
+
         $articles = $repository->findAllArticlesDESC();
 
         return $this->render('Homepage/homepage.html.twig', [
             'articles' => $articles,
-            'username' => $username,
+            'currentUser' => $currentUser,
+            'message'  => $message,
         ]);
     }
 }

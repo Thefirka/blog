@@ -9,5 +9,8 @@
         <input type="password" name="password"><br><br>
         <input type="submit">
     </form>
+    {% if message != [] %}
+        <div class="alert-danger"><p>{{ message[0] }}</p></div>
+    {% endif %}
     Already registered? <a href="{{ path('app_login') }}">Login</a>
 {% endblock %}

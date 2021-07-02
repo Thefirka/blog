@@ -9,6 +9,7 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 class NewArticleController extends AbstractController
@@ -20,13 +21,17 @@ class NewArticleController extends AbstractController
     {
         $name = '';
         $text = '';
-        $authorName = '';
+        $session = new Session();
+        $message = $session->getFlashBag()->get('error');
+        $session->getFlashBag()->clear();
+        $currentUser = '';
         if (!$request->request->all()) {
 
             return $this->render('CreateArticle/createArticle.html.twig',[
                 'name' => $name,
                 'text' => $text,
-                'username' => $authorName
+                'currentUser' => $currentUser,
+                'message'  => $message,
             ]);
         } else {
             $name = $request->request->get('name');
@@ -48,7 +53,7 @@ class NewArticleController extends AbstractController
             return $this->render('CreateArticle/createArticle.html.twig', [
                 'name' => $name,
                 'text' => $text,
-                'username' => $authorName
+                'message'  => $message,
             ]);
         }
     }

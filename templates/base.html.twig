@@ -13,11 +13,15 @@
     </head>
     <body>
         {% block header %}
-        {% if username == true %}
-            Thanks for using MySpace, {{ username }}!
+        {% if currentUser == true %}
+            Thanks for using MySpace, {{ currentUser }}! <a href="{{ path('app_logout') }}">Logout</a>
+            <a style="position: absolute; right: 200px">Write a new Article</a>
             {% else %}
                 You haven't logged in, <a href="{{ path('app_login') }}">Login</a> or <a href="{{ path('app_register')}}">JOIN OUR RANKS</a>
         {% endif %}
+            {% if message != [] %}
+                <div class="alert-danger"><p>{{ message[0] }}</p></div>
+            {% endif %}
         {% endblock %}
         {% block body %}{% endblock %}
     </body>
