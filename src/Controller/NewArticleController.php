@@ -18,15 +18,15 @@ class NewArticleController extends AbstractController
      */
     public function NewArticle(Request $request, EntityManagerInterface $entityManager)
     {
+        $name = '';
+        $text = '';
+        $authorName = '';
         if (!$request->request->all()) {
-            $name = '';
-            $text = '';
-            $authorName = '';
 
-            return $this->render('createArticle/createArticle.html.twig',[
+            return $this->render('CreateArticle/createArticle.html.twig',[
                 'name' => $name,
                 'text' => $text,
-                ''
+                'username' => $authorName
             ]);
         } else {
             $name = $request->request->get('name');
@@ -45,9 +45,10 @@ class NewArticleController extends AbstractController
             $entityManager->persist($article);
             $entityManager->flush();
 
-            return $this->render('createArticle/createArticle.html.twig', [
+            return $this->render('CreateArticle/createArticle.html.twig', [
                 'name' => $name,
-                'text' => $text
+                'text' => $text,
+                'username' => $authorName
             ]);
         }
     }

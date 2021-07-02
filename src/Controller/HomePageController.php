@@ -3,14 +3,8 @@
 
 namespace App\Controller;
 
-
-use App\Entity\Article;
 use App\Repository\ArticleRepository;
-use App\Repository\UserRepository;
-use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomePageController extends AbstractController
@@ -18,12 +12,14 @@ class HomePageController extends AbstractController
     /**
      * @Route("/", name="app_homepage")
      */
-    public function homepage(ArticleRepository $repository, UserRepository $userRepository)
+    public function homepage(ArticleRepository $repository)
     {
+        $username = false;
         $articles = $repository->findAllArticlesDESC();
 
-        return $this->render('homepage/homepage.html.twig', [
+        return $this->render('Homepage/homepage.html.twig', [
             'articles' => $articles,
+            'username' => $username,
         ]);
     }
 }

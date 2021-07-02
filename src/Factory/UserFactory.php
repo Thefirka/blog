@@ -2,6 +2,7 @@
 
 namespace App\Factory;
 
+use App\Entity\Article;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -36,8 +37,9 @@ final class UserFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'name' => 'test',
+            'name' => self::faker()->userName(),
             'status' => 'admin',
+            'password' => self::faker()->password(),
         ];
     }
 
