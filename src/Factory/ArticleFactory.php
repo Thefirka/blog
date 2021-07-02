@@ -5,6 +5,7 @@ namespace App\Factory;
 use App\Entity\Article;
 
 use App\Repository\ArticleRepository;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -27,17 +28,14 @@ use Zenstruck\Foundry\Proxy;
  */
 final class ArticleFactory extends ModelFactory
 {
-    private $user;
     public function __construct()
     {
         parent::__construct();
-        $this->user = new UserFactory();
-        // TODO inject services if required (https://github.com/zenstruck/foundry#factories-as-services)
     }
 
     protected function getDefaults(): array
     {
-        $user = $this->user::createOne();
+        $user = UserFactory::createOne();
         return [
             'name' => self::faker()->realText(10),
             'ArticleBody' => self::faker()->paragraph(
@@ -45,7 +43,7 @@ final class ArticleFactory extends ModelFactory
                 true
             ),
             'PublishedAt' => self::faker()->dateTimeBetween('-100 days', '-1 minute'),
-            'author' => $user
+            'author' => $user,
         ];
     }
 

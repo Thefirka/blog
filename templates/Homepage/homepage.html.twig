@@ -6,7 +6,7 @@
         <p><i>{{ loop.index }}</i>
         <a href="{{ path('app_show', {slug: article.slug}) }}">
         {{ article.name }}
-        </a>Published {{ article.PublishedAt|ago }} by {{ article.getAuthor.getName}} </p>
+        </a>Published {{ article.PublishedAt|ago }} by {{ article.author.username}} </p>
         {% endfor %}
         <p><a href=""></a></p>
     </div>

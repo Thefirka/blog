@@ -5,7 +5,6 @@ namespace App\Controller;
 
 use App\Repository\ArticleRepository;
 use App\Repository\UserRepository;
-use App\UserSessionApp\UserSession;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,11 +14,10 @@ class HomePageController extends AbstractController
     /**
      * @Route("/", name="app_homepage")
      */
-    public function homepage(ArticleRepository $repository)
+    public function homepage(ArticleRepository $repository, UserRepository $userRepository)
     {
         $session = new Session();
-        $currentUser = new UserSession();
-        $currentUser = $currentUser->getCurrentUser();
+        $currentUser = $this->getUser();
         $message = $session->getFlashBag()->get('error');
         $session->getFlashBag()->clear();
 

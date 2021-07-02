@@ -6,12 +6,16 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -21,28 +25,29 @@ class User
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="author")
+     * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $articles;
+    private $username;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="json")
      */
-    private $status;
+    private $roles = [];
 
     /**
-     * @ORM\Column(type="string", length=30)
-     */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @var string The hashed password
+     * @ORM\Column(type="string")
      */
     private $password;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Article::class, mappedBy="author", orphanRemoval=true)
+     */
+    private $Articles;
+
     public function __construct()
     {
-        $this->articles = new ArrayCollection();
+        $this->Articles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -51,60 +56,53 @@ class User
     }
 
     /**
-     * @return Collection|Article[]
+     * @deprecated since Symfony 5.3, use getUserIdentifier instead
      */
-    public function getArticles(): Collection
+    public function getUsername(): string
     {
-        return $this->articles;
+        return (string) $this->username;
     }
 
-    public function addArticle(Article $article): self
+    public function setUsername(string $username): self
     {
-        if (!$this->articles->contains($article)) {
-            $this->articles[] = $article;
-            $article->setAuthor($this);
-        }
+        $this->username = $username;
 
         return $this;
     }
 
-    public function removeArticle(Article $name): self
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
     {
-        if ($this->articles->removeElement($name)) {
-            // set the owning side to null (unless already changed)
-            if ($name->getAuthor() === $this) {
-                $name->setAuthor(null);
-            }
-        }
+        return (string) $this->username;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }
 
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -112,6 +110,56 @@ class User
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getArticles(): Collection
+    {
+        return $this->Articles;
+    }
+
+    public function addArticle(Article $article): self
+    {
+        if (!$this->Articles->contains($article)) {
+            $this->Articles[] = $article;
+            $article->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): self
+    {
+        if ($this->Articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getAuthor() === $this) {
+                $article->setAuthor(null);
+            }
+        }
 
         return $this;
     }

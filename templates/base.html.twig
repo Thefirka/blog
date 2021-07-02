@@ -14,10 +14,10 @@
     <body>
         {% block header %}
         {% if currentUser == true %}
-            Thanks for using MySpace, {{ currentUser }}! <a href="{{ path('app_logout') }}">Logout</a>
-            <a style="position: absolute; right: 200px">Write a new Article</a>
+            <p> Thanks for using MySpace, {{ currentUser.username }}! <a href="{{ path('app_logout') }}">Logout</a>
+            <a style="position: absolute; right: 200px" href="{{ path('app_new_article') }}">Write a new Article</a></p>
             {% else %}
-                You haven't logged in, <a href="{{ path('app_login') }}">Login</a> or <a href="{{ path('app_register')}}">JOIN OUR RANKS</a>
+               <p> You haven't logged in, <a href="{{ path('app_login') }}">Login</a> or <a href="{{ path('app_register')}}">JOIN OUR RANKS</a></p>
         {% endif %}
             {% if message != [] %}
                 <div class="alert-danger"><p>{{ message[0] }}</p></div>

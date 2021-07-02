@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
@@ -16,10 +17,14 @@ class ArticleController extends AbstractController
      */
     public function show(Article $article)
     {
-        $username = false;
+        $session = new Session();
+        $message = $session->getFlashBag()->get('error');
+        $session->getFlashBag()->clear();
+        $currentUser = $this->getUser();
             return $this->render('Article/article.html.twig', [
                 'article' => $article,
-                'username' => $username,
+                'currentUser' => $currentUser,
+                'message' => $message,
             ]);
     }
 }

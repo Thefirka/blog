@@ -2,9 +2,9 @@
 
 namespace App\Factory;
 
-use App\Entity\Article;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -31,15 +31,13 @@ final class UserFactory extends ModelFactory
     {
         parent::__construct();
 
-        // TODO inject services if required (https://github.com/zenstruck/foundry#factories-as-services)
     }
 
     protected function getDefaults(): array
     {
         return [
-            'name' => self::faker()->userName(),
-            'status' => 'admin',
-            'password' => self::faker()->password(),
+            'username' => self::faker()->userName(),
+            'password' => (self::faker()->password()),
         ];
     }
 

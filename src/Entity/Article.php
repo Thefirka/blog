@@ -42,7 +42,7 @@ class Article
     private $publishedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Articles")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
