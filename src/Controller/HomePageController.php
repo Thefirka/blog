@@ -14,7 +14,7 @@ class HomePageController extends AbstractController
     /**
      * @Route("/", name="app_homepage")
      */
-    public function homepage(ArticleRepository $repository, UserRepository $userRepository)
+    public function homepage(ArticleRepository $repository)
     {
         $session = new Session();
         $currentUser = $this->getUser();

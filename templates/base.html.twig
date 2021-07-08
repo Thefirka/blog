@@ -15,7 +15,8 @@
         {% block header %}
         {% if currentUser == true %}
             <p> Thanks for using MySpace, {{ currentUser.username }}! <a href="{{ path('app_logout') }}">Logout</a>
-            <a style="position: absolute; right: 200px" href="{{ path('app_new_article') }}">Write a new Article</a></p>
+            <a style="position: absolute; right: 150px" href="{{ path('app_homepage') }}"> Return to homepage </a>
+            <a style="text-align: center" href="{{ path('app_new_article') }}">Write a new Article</a></p>
             {% else %}
                <p> You haven't logged in, <a href="{{ path('app_login') }}">Login</a> or <a href="{{ path('app_register')}}">JOIN OUR RANKS</a></p>
         {% endif %}
