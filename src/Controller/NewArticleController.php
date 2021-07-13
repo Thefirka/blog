@@ -49,8 +49,10 @@ class NewArticleController extends AbstractController
                 $article->setAuthor($currentUser);
                 $entityManager->persist($article);
                 $entityManager->flush();
+                return $this->redirectToRoute('app_homepage');
             } else {
                 $session->getFlashBag()->add('error', 'article with this name already exist');
+                $message = $session->getFlashBag()->get('error');
             }
             return $this->render('NewArticle/NewArticle.twig', [
                 'name' => $name,
